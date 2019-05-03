@@ -24,11 +24,9 @@ import java.util.Map;
 
 public class PhoneAsyncTask extends AsyncTask<String, Void, JSONObject> {
     private IData iData;
-    private Context context;
     private Map<String,String> resource;
-    public PhoneAsyncTask(Context context, IData iData, Map<String,String>resource)
+    public PhoneAsyncTask(Map<String,String>resource, IData iData)
     {
-        this.resource = resource;
         this.iData = iData;
         this.resource = resource;
     }
@@ -63,6 +61,7 @@ public class PhoneAsyncTask extends AsyncTask<String, Void, JSONObject> {
             }
             result  = stringBuffer.toString();
             JSONObject parentObject = new JSONObject(result);
+
             return parentObject;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -77,14 +76,17 @@ public class PhoneAsyncTask extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         super.onPostExecute(jsonObject);
-        try {
-            int mResult = jsonObject.getInt("result");
-            if (mResult > 0){
-                JSONArray jsonArray = jsonObject.getJSONArray("response_data");
-                iData.onDataSuccess(jsonArray);
+        if (jsonObject != null) {
+            try {
+                int mResult = jsonObject.getInt("result");
+                String m = jsonObject.getString("response_message");
+                if (mResult > 0) {
+                    JSONArray jsonArray = jsonObject.getJSONArray("response_data");
+                    iData.onDataSuccess(m, jsonArray);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 }

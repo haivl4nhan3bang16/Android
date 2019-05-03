@@ -32,10 +32,11 @@ public class MainActivity extends AppCompatActivity {
                     mMap.put("password",mPass);
                     new LoginAsyncTask(MainActivity.this, new ILoginView() {
                         @Override
-                        public void onLoginSuccess(String m) {
+                        public void onLoginSuccess(String m, int userID) {
 
-                            Toast.makeText(MainActivity.this,m, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this, PhoneActivity.class);
+                            intent.putExtra("id_us",userID);
+                            Toast.makeText(MainActivity.this,m, Toast.LENGTH_SHORT).show();
                             startActivity(intent);
                         }
 

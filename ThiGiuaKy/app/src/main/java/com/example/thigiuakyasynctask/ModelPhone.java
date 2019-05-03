@@ -3,6 +3,8 @@ package com.example.thigiuakyasynctask;
 import java.io.Serializable;
 
 public class ModelPhone implements Serializable {
+
+    private int IDUser;
     private int ID;
     private String ProductName;
     private int Price;
@@ -17,7 +19,19 @@ public class ModelPhone implements Serializable {
         Description = mDescription;
         Producer = mProducer;
     }
+    public ModelPhone(String mProductName, int mPrice, String mDescription, String mProducer) {
+        ProductName = mProductName;
+        Price = mPrice;
+        Description = mDescription;
+        Producer = mProducer;
+    }
+    public int getIDUser() {
+        return IDUser;
+    }
 
+    public void setIDUser(int IDUser) {
+        this.IDUser = IDUser;
+    }
     public int getID() {
         return ID;
     }

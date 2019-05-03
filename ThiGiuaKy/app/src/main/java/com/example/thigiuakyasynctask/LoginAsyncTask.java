@@ -100,7 +100,9 @@ public class LoginAsyncTask extends AsyncTask<String, Boolean, JSONObject> {
                 String mMessage =  jsonObject.getString("response_message");
                 if(mResult > 0)
                 {
-                    iLoginView.onLoginSuccess(mMessage);
+                    JSONObject object_user = jsonObject.getJSONObject("response_data");
+                    int id = object_user.getInt("user_id");
+                    iLoginView.onLoginSuccess(mMessage, id);
 
                 }
                 else

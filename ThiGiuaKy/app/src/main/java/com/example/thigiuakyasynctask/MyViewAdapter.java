@@ -10,8 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyViewAdapter extends RecyclerView.Adapter<MyViewAdapter.ViewHolder> {
     List<ModelPhone> models;
@@ -30,21 +34,36 @@ public class MyViewAdapter extends RecyclerView.Adapter<MyViewAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewAdapter.ViewHolder viewHolder, int i) {
-        final ModelPhone model = models.get(i);
+    public void onBindViewHolder(@NonNull MyViewAdapter.ViewHolder viewHolder, final int position) {
+        final ModelPhone model = models.get(position);
         viewHolder.txtName.setText(model.getProductName());
         viewHolder.txtPrice.setText(String.valueOf(model.getPrice()));
         viewHolder.txtDescrip.setText(model.getDescription());
         viewHolder.txtProducer.setText(model.getProducer());
-        final int position = i;
+        final int index = position;
 
         viewHolder.btnDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mContext, PhoneDetail.class);
-                i.putExtra("phone", models.get(position));
+                i.putExtra("phone", models.get(index));
                 mContext.startActivity(i);
 
+            }
+        });
+        viewHolder.btnDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Map<String, String> mMap = new HashMap<>();
+                    mMap.put("id", String.valueOf(models.get(index).getID()));
+                    mMap.put("user_id", String.valueOf(models.get(index).getIDUser()));
+                    new PhoneAsyncTask(mMap, new IData() {
+                        @Override
+                        public void onDataSuccess(String s, JSONArray jsonArray) {
+
+                        }
+                    }).execute("http://www.vidophp.tk/api/account/dataaction?context=delete");
+                    PhoneActivity.Update();
             }
         });
     }
@@ -59,6 +78,7 @@ public class MyViewAdapter extends RecyclerView.Adapter<MyViewAdapter.ViewHolder
         TextView txtDescrip;
         TextView txtProducer;
         Button btnDetail;
+        Button btnDel;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -67,6 +87,7 @@ public class MyViewAdapter extends RecyclerView.Adapter<MyViewAdapter.ViewHolder
             this.txtDescrip = itemView.findViewById(R.id.txtDescription);
             this.txtProducer = itemView.findViewById(R.id.txtProducer);
             this.btnDetail = itemView.findViewById(R.id.btndetail);
+            this.btnDel = itemView.findViewById(R.id.btndel);
         }
 
 

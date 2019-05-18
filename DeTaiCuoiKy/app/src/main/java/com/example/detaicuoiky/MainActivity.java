@@ -32,25 +32,26 @@ public class MainActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     RecyclerView recyclerView;
     List<Model> models = new ArrayList<>();
+    final Model data = new Model();
     static FirebaseDatabase db;
     static String userID;
     static String userEmail;
     static String userName;
     static Adapter adapter;
-    EditText edtAddName;
-    EditText edtAddPrice;
-    EditText edtAddOrigin;
+    EditText edtAddSubcode;
+    EditText edtAddSubName;
+    EditText edtAddCredits;
+    EditText edtAddDescrip;
     Button btnAdd;
-    static Model data = new Model();
-    String Name = "";
-    String Price = "";
-    String Origin = "";
     static DatabaseReference myRef;
+    String SubCode = "";
+    String SubName = "";
+    String Credits = "";
+    String Descrip = "";
     static DatabaseReference post;
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
     }
     @Override
     public void onBackPressed() {
@@ -73,23 +74,27 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         signIn();
         OnInIt();
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         db = FirebaseDatabase.getInstance();
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(onValidateForm())
-               {
+                if(onValidateForm()) {
                     AddProduct();
                     onClearForm();
-               }
-
+                }
             }
         });
-        myRef = db.getReference("product");
+        myRef = db.getReference("AdvancedAndroidFinalTest");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                models = new ArrayList<>();
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Model model = ds.getValue(Model.class);
+                    models.add(model);
+                }
                 if(models.isEmpty())
                 {
                     for(DataSnapshot ds : dataSnapshot.getChildren()){
@@ -102,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                         Model value = ds.getValue(Model.class);
                         Boolean check = false;
                         for (int i = 0; i < models.size(); i++)
-                            if (value.getProductID().equals(models.get(i).getProductID())) {
+                            if (value.getSubject_code().equals(models.get(i).getSubject_code())) {
                                 check = true;
                                 break;
                             }
@@ -111,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
-                adapter.notifyDataSetChanged();
+                adapter = new Adapter(MainActivity.this,R.layout.custum_recycleview, models);
+                recyclerView.setAdapter(adapter);
                 recyclerView.smoothScrollToPosition(adapter.getItemCount());
             }
 
@@ -120,18 +126,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-        adapter = new Adapter(MainActivity.this,R.layout.custum_recycleview, models);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
     }
 
     private void OnInIt() {
         recyclerView = findViewById(R.id.recycleview);
-        edtAddName = findViewById(R.id.edt_name_product);
-        edtAddPrice = findViewById(R.id.edt_price_product);
-        edtAddOrigin = findViewById(R.id.edt_origin_product);
+        edtAddSubName = findViewById(R.id.edt_subname);
+        edtAddSubcode = findViewById(R.id.edt_subcode);
+        edtAddCredits = findViewById(R.id.edt_credits);
+        edtAddDescrip = findViewById(R.id.edt_descrip);
         btnAdd = findViewById(R.id.btnAdd);
     }
 
@@ -157,46 +159,52 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
     }
-    void AddProduct() {
-        myRef = db.getReference("product");
-        data.setUserEmail(userEmail);
-        data.setUserName(userName);
-        data.setUserID(userID);
-        data.setProductName(edtAddName.getText().toString());
-        data.setPrice(edtAddPrice.getText().toString());
-        data.setOrigin(edtAddOrigin.getText().toString());
-        post = myRef.child(data.getProductName());
-        data.setProductID(post.getKey());
-        post.setValue(data);
-    }
-
     private boolean onValidateForm()
     {
-        Name = edtAddName.getText().toString();
-        Price = edtAddPrice.getText().toString();
-        Origin = edtAddOrigin.getText().toString();
-        if(Name.equals(""))
+        SubCode = edtAddSubcode.getText().toString();
+        SubName = edtAddSubName.getText().toString();
+        Credits = edtAddCredits.getText().toString();
+        Descrip = edtAddDescrip.getText().toString();
+        if(SubCode.equals(""))
         {
-            edtAddName.setError("Can be null");
+            edtAddSubcode.setError("Can be null");
             return false;
         }
-        if(Price.equals(""))
+        if(SubName.equals(""))
         {
-            edtAddPrice.setError("Can be null");
+            edtAddSubName.setError("Can be null");
             return false;
         }
-        if(Origin.equals(""))
+        if(Credits.equals(""))
         {
-            edtAddOrigin.setError("Can be null");
+            edtAddCredits.setError("Can be null");
+            return false;
+        }
+        if(Descrip.equals(""))
+        {
+            edtAddDescrip.setError("Can be null");
             return false;
         }
         return true;
     }
 
+    void AddProduct() {
+        myRef = db.getReference("AdvancedAndroidFinalTest");
+        data.setUserEmail(userEmail);
+        data.setUserName(userName);
+        data.setUserID(userID);
+        data.setSubject_code(edtAddSubcode.getText().toString());
+        data.setSubject_name(edtAddSubName.getText().toString());
+        data.setCredits(Integer.parseInt(edtAddCredits.getText().toString()));
+        data.setDescription(edtAddDescrip .getText().toString());
+        post = myRef.child(data.getSubject_code());
+        post.setValue(data);
+    }
     private void onClearForm()
     {
-        edtAddName.setText("");
-        edtAddPrice.setText("");
-        edtAddOrigin.setText("");
+        edtAddSubcode.setText("");
+        edtAddSubName.setText("");
+        edtAddCredits.setText("");
+        edtAddDescrip.setText("");
     }
 }

@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -27,34 +29,36 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     @NonNull
     @Override
     public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(mContext).inflate(mResource,viewGroup,false);
-        return new ViewHolder(v);
+        return new ViewHolder(LayoutInflater.from(mContext).inflate(mResource,viewGroup,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Adapter.ViewHolder viewHolder, final int position) {
-        final Model model = models.get(position);
-        viewHolder.id_product.setText(model.getProductID());
-        viewHolder.name_product.setText(model.getProductName());
-        viewHolder.price_product.setText(model.getPrice() + " Đồng");
-        viewHolder.origin_product.setText(model.getOrigin());
-        viewHolder.image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mContext, DetailProduct.class);
-                i.putExtra("id_product", model.getProductID());
-                i.putExtra("name_product", model.getProductName());
-                i.putExtra("price_product", model.getPrice());
-                i.putExtra("id_origin", model.getOrigin());
-                mContext.startActivity(i);
-            }
-        });
+    public void onBindViewHolder(@NonNull final Adapter.ViewHolder viewHolder, final int position) {
+        viewHolder.txt_subcode.setText(models.get(position).getSubject_code());
+        viewHolder.txt_subname.setText(models.get(position).getSubject_name());
+        viewHolder.txt_credits.setText(String.valueOf(models.get(position).getCredits()));
+        viewHolder.txt_descrip.setText(models.get(position).getDescription());
         viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(mContext, DetailProduct.class);
+                i.putExtra("code", models.get(position).getSubject_code());
+                i.putExtra("name", models.get(position).getSubject_name());
+                i.putExtra("credits", String.valueOf(models.get(position).getCredits()));
+                i.putExtra("description", models.get(position).getDescription());
+                mContext.startActivity(i);
             }
         });
+        viewHolder.btnDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference mDatabase;
+                mDatabase = FirebaseDatabase.getInstance().getReference("AdvancedAndroidFinalTest");
+                mDatabase.child(viewHolder.txt_subcode.getText().toString()).removeValue() ;
+            }
+        });
+
+
     }
 
     @Override
@@ -63,20 +67,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView id_product;
-        TextView name_product;
-        TextView price_product;
-        TextView origin_product;
+
         LinearLayout linearLayout;
-        ImageView image;
+        TextView txt_subcode;
+        TextView txt_subname;
+        TextView txt_credits;
+        TextView txt_descrip;
+        Button btnDel;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.linearLayout = itemView.findViewById(R.id.place_delete);
-            this.id_product = itemView.findViewById(R.id.txt_idproduct);
-            this.name_product = itemView.findViewById(R.id.txt_nameproduct);
-            this.price_product = itemView.findViewById(R.id.txt_price);
-            this.origin_product = itemView.findViewById(R.id.txt_xuatxu);
-            this.image = itemView.findViewById(R.id.img_product);
+            txt_subcode = itemView.findViewById(R.id.txt_subcode);
+            txt_subname = itemView.findViewById(R.id.txt_subname);
+            txt_credits = itemView.findViewById(R.id.txt_credit);
+            txt_descrip = itemView.findViewById(R.id.txt_descrip);
+            btnDel = itemView.findViewById(R.id.btnDel);
+
 
         }
 

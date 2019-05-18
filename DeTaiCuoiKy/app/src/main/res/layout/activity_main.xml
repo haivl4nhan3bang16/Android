@@ -8,7 +8,7 @@
     android:orientation="vertical">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="wrap_content"
     android:layout_weight="1">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleview"
@@ -23,8 +23,7 @@
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:layout_weight="1"
-    android:orientation="vertical"
-     android:padding="10dp">
+    android:orientation="vertical">
      <LinearLayout
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
@@ -33,32 +32,14 @@
              android:layout_width="0dp"
              android:layout_height="wrap_content"
              android:layout_weight="1"
-             android:text="NameProduct"
-             android:layout_marginLeft="5dp"
-             android:textSize="15dp"/>
-         <EditText
-             android:layout_width="0dp"
-             android:layout_height="wrap_content"
-             android:layout_weight="2"
-             android:id="@+id/edt_name_product"/>
-     </LinearLayout>
-     <LinearLayout
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:orientation="horizontal">
-         <TextView
-             android:layout_width="0dp"
-             android:layout_height="wrap_content"
-             android:layout_weight="1"
-             android:text="Price"
-             android:layout_marginLeft="5dp"
-             android:textSize="15dp"/>
+             android:text="Subcode :"
+             android:layout_marginLeft="5dp" />
          <EditText
              android:layout_width="0dp"
              android:layout_height="wrap_content"
              android:layout_weight="2"
              android:inputType="number"
-             android:id="@+id/edt_price_product"/>
+             android:id="@+id/edt_subcode"/>
      </LinearLayout>
      <LinearLayout
          android:layout_width="match_parent"
@@ -68,19 +49,49 @@
              android:layout_width="0dp"
              android:layout_height="wrap_content"
              android:layout_weight="1"
-             android:text="Origin"
-             android:layout_marginLeft="5dp"
-             android:textSize="15dp"/>
+             android:text="Subname :"
+             android:layout_marginLeft="5dp" />
          <EditText
              android:layout_width="0dp"
              android:layout_height="wrap_content"
              android:layout_weight="2"
-             android:id="@+id/edt_origin_product"/>
+             android:id="@+id/edt_subname"/>
+     </LinearLayout>
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal">
+         <TextView
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:text="Credits :"
+             android:layout_marginLeft="5dp" />
+         <EditText
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="2"
+             android:id="@+id/edt_credits"/>
+     </LinearLayout>
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal">
+         <TextView
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:text="Descrip :"
+             android:layout_marginLeft="5dp" />
+         <EditText
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="2"
+             android:id="@+id/edt_descrip"/>
      </LinearLayout>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="Add"
         android:id="@+id/btnAdd"/>
 

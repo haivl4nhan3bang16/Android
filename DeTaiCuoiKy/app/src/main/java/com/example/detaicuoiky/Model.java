@@ -4,21 +4,64 @@ public class Model{
     private String userName;
     private String userEmail;
     private String userID;
-    private String ProductID;
-    private String ProductName;
-    private String Price;
-    private String Origin;
+    private int id;
+    private String subject_code;
+    private String subject_name;
+    private int credits;
+    private String description;
+    public Model() {
+    }
 
-    public Model(String userName, String userEmail, String userID, String mName, String mPrice, String mOrigin) {
+    public Model(String userName, String userEmail, String userID, int id, String subject_code, String subject_name, int credits, String description) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userID = userID;
-        this.ProductName = mName;
-        this.Price = mPrice;
-        this.Origin = mOrigin;
+        this.id = id;
+        this.subject_code = subject_code;
+        this.subject_name = subject_name;
+        this.credits = credits;
+        this.description = description;
+
     }
 
-    public Model() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getSubject_code() {
+        return subject_code;
+    }
+
+    public void setSubject_code(String subject_code) {
+        this.subject_code = subject_code;
+    }
+
+    public String getSubject_name() {
+        return subject_name;
+    }
+
+    public void setSubject_name(String subject_name) {
+        this.subject_name = subject_name;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     public String getUserName() {
         return userName;
@@ -44,34 +87,4 @@ public class Model{
         this.userID = userID;
     }
 
-    public String getProductName() {
-        return ProductName;
-    }
-
-    public void setProductName(String productName) {
-        ProductName = productName;
-    }
-
-    public String getPrice() {
-        return Price;
-    }
-
-    public void setPrice(String price) {
-        Price = price;
-    }
-
-    public String getOrigin() {
-        return Origin;
-    }
-
-    public void setOrigin(String origin) {
-        Origin = origin;
-    }
-    public String getProductID() {
-        return ProductID;
-    }
-
-    public void setProductID(String productID) {
-        ProductID = productID;
-    }
 }

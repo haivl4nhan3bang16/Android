@@ -1,11 +1,10 @@
-package com.example.thigiuakyasynctask;
+package com.example.detaicuoiky;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.example.thigiuakyasynctask.ILoginView;
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,24 +21,17 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 
-public class LoginAsyncTask extends AsyncTask<String, Boolean, JSONObject> {
-    private Map<String,String> mMap;
-    private ILoginView iLoginView;
+public class SubjectAsyntask extends AsyncTask<String, Boolean, JSONObject> {
+    private GetDaTa  iGetData;
+    private Map<String,String> resource;
     private Context mContext;
     private ProgressDialog dialog;
-    public LoginAsyncTask(Context context,ILoginView iLoginView,Map<String,String> map){
-        this.mMap = map;
-        this.iLoginView = iLoginView;
+    public SubjectAsyntask(Context context, GetDaTa iGetData, Map<String,String>resource)
+    {
         this.mContext = context;
+        this.iGetData = iGetData;
+        this.resource = resource;
     }
-
-    @Override
-    protected void onPreExecute() {
-        dialog = new ProgressDialog(mContext);
-        dialog.setTitle("Đợi xíu");
-        dialog.show();
-    }
-
     @Override
     protected JSONObject doInBackground(String... strings) {
         try {
@@ -47,17 +39,17 @@ public class LoginAsyncTask extends AsyncTask<String, Boolean, JSONObject> {
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             connection.setRequestProperty("Content-Type","application/json");
             connection.setRequestMethod("POST");
-            JSONObject jsonObject = new JSONObject();
-            Iterator iterator = mMap.keySet().iterator();
+            JSONObject data = new JSONObject();
+            Iterator iterator = resource.keySet().iterator();
             while (iterator.hasNext()){
                 String key = (String) iterator.next();
-                String value = mMap.get(key);
-                jsonObject.put(key,value);
+                String value = resource.get(key);
+                data.put(key,value);
             }
 
             OutputStream outputStream = connection.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
-            bufferedWriter.write(String.valueOf(jsonObject));
+            bufferedWriter.write(String.valueOf(data));
             bufferedWriter.flush();
             bufferedWriter.close();
             outputStream.close();
@@ -71,7 +63,7 @@ public class LoginAsyncTask extends AsyncTask<String, Boolean, JSONObject> {
             }
             result  = stringBuffer.toString();
             JSONObject parentObject = new JSONObject(result);
-            publishProgress(true);
+
             return parentObject;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -83,37 +75,21 @@ public class LoginAsyncTask extends AsyncTask<String, Boolean, JSONObject> {
         return null;
     }
 
-    @Override
-    protected void onProgressUpdate(Boolean... values) {
-        if(values[0] == true)
-        {
-            dialog.dismiss();
-        }
-    }
 
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
-        if(jsonObject != null)
-        {
-            try{
+        super.onPostExecute(jsonObject);
+        if (jsonObject != null) {
+            try {
                 int mResult = jsonObject.getInt("result");
-                String mMessage =  jsonObject.getString("response_message");
-                if(mResult > 0)
-                {
-                    JSONObject object_user = jsonObject.getJSONObject("response_data");
-                    int id = object_user.getInt("user_id");
-                    iLoginView.onLoginSuccess(mMessage, id);
-
-                }
-                else
-                {
-                    iLoginView.onLoginFail(mMessage);
+                String m = jsonObject.getString("response_message");
+                if (mResult > 0) {
+                    JSONArray jsonArray = jsonObject.getJSONArray("response_data");
+                    iGetData.onDataSuccess(m, jsonArray);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
-
-
 }

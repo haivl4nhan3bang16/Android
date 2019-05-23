@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:background="#45CAC5E6"
     android:padding="10dp">
     <LinearLayout
         android:layout_width="wrap_content"
@@ -20,13 +21,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="SubCode :"
+                android:textStyle="bold"
                 android:layout_marginLeft="5dp"
                 android:textSize="20dp"/>
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:background="#FFFFFF"
                 android:textSize="20dp"
+                android:paddingLeft="5dp"
                 android:id="@+id/edt_detail_subcode"/>
         </LinearLayout>
         <LinearLayout
@@ -39,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Subname :"
+                android:textStyle="bold"
                 android:layout_marginLeft="5dp"
                 android:textSize="20dp"/>
             <EditText
@@ -46,6 +51,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:textSize="20dp"
+                android:paddingLeft="5dp"
+                android:background="#FFFFFF"
                 android:id="@+id/edt_detail_subname"/>
         </LinearLayout>
         <LinearLayout
@@ -58,13 +65,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Credits :"
+                android:textStyle="bold"
                 android:layout_marginLeft="5dp"
                 android:textSize="20dp"/>
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:background="#FFFFFF"
                 android:textSize="20dp"
+                android:paddingLeft="5dp"
                 android:id="@+id/edt_detail_credits"/>
         </LinearLayout>
         <LinearLayout
@@ -77,13 +87,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Descrip :"
+                android:textStyle="bold"
                 android:layout_marginLeft="5dp"
                 android:textSize="20dp"/>
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:background="#FFFFFF"
                 android:textSize="20dp"
+                android:paddingLeft="5dp"
                 android:id="@+id/edt_detail_Descrip"/>
         </LinearLayout>
         <LinearLayout
@@ -94,12 +107,13 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit"
+                android:background="@drawable/edit"
+                android:layout_marginRight="20dp"
                 android:id="@+id/btnEdit"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Save"
+                android:background="@drawable/ic_save_black_24dp"
                 android:id="@+id/btnSave"/>
 
         </LinearLayout>

@@ -1,6 +1,10 @@
 package com.example.detaicuoiky;
 
-public class Model{
+import com.google.firebase.database.Exclude;
+
+import java.io.Serializable;
+
+public class Model implements Serializable {
     private String userName;
     private String userEmail;
     private String userID;
@@ -9,6 +13,27 @@ public class Model{
     private String subject_name;
     private int credits;
     private String description;
+    private String subjectID;
+    @Exclude
+    String keyParent;
+
+    public String getSubjectID() {
+        return subjectID;
+    }
+
+    public void setSubjectID(String subjectID) {
+        this.subjectID = subjectID;
+    }
+
+    @Exclude
+    public String getKeyParent() {
+        return keyParent;
+    }
+    @Exclude
+    public void setKeyParent(String keyParent) {
+        this.keyParent = keyParent;
+    }
+
     public Model() {
     }
 

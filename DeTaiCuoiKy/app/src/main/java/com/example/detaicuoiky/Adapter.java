@@ -42,19 +42,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mContext, DetailProduct.class);
-                i.putExtra("code", models.get(position).getSubject_code());
-                i.putExtra("name", models.get(position).getSubject_name());
-                i.putExtra("credits", String.valueOf(models.get(position).getCredits()));
-                i.putExtra("description", models.get(position).getDescription());
+                i.putExtra("data", models.get(position));
                 mContext.startActivity(i);
             }
         });
+
+
         viewHolder.btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference mDatabase;
-                mDatabase = FirebaseDatabase.getInstance().getReference("AdvancedAndroidFinalTest");
-                mDatabase.child(viewHolder.txt_subcode.getText().toString()).removeValue() ;
+                MainActivity.myRef.child(models.get(position).getKeyParent()).removeValue();
+
             }
         });
 

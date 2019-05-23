@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 public class DetailProduct extends AppCompatActivity {
     EditText edt_dt_code;
     EditText edt_dt_name;
@@ -18,6 +20,7 @@ public class DetailProduct extends AppCompatActivity {
     EditText edt_dt_descrip;
     Button btnEdit;
     Button btnSave;
+    Model model;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,10 +28,12 @@ public class DetailProduct extends AppCompatActivity {
         OnIt();
         Enable();
         final Intent intent = getIntent();
-        edt_dt_code.setText(intent.getStringExtra("code"));
-        edt_dt_name.setText(intent.getStringExtra("name"));
-        edt_dt_credits.setText(intent.getStringExtra("credits"));
-        edt_dt_descrip.setText(intent.getStringExtra("description"));
+        model = (Model) intent.getSerializableExtra("data");
+        edt_dt_code.setText(model.getSubject_code());
+        edt_dt_name.setText(model.getSubject_name());
+        edt_dt_credits.setText(String.valueOf(model.getCredits()));
+        edt_dt_descrip.setText(model.getDescription());
+
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,11 +45,12 @@ public class DetailProduct extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Disable();
-                MainActivity.myRef = MainActivity.db.getReference("AdvancedAndroidFinalTest");
-                MainActivity.myRef.child(edt_dt_code .getText().toString()).child("subject_code").setValue(edt_dt_code.getText().toString());
-                MainActivity.myRef.child(edt_dt_code.getText().toString()).child("subject_name").setValue(edt_dt_name.getText().toString());
-                MainActivity.myRef.child(String.valueOf(Integer.parseInt(edt_dt_code.getText().toString()))).child("credits").setValue(Integer.parseInt(edt_dt_credits.getText().toString()));
-                MainActivity.myRef.child(edt_dt_code.getText().toString()).child("description").setValue(edt_dt_descrip.getText().toString());
+                model.setSubject_code(edt_dt_code.getText().toString());
+                model.setSubject_name(edt_dt_name.getText().toString());
+                model.setCredits(Integer.parseInt(edt_dt_credits.getText().toString()));
+                model.setDescription(edt_dt_descrip.getText().toString());
+                DatabaseReference chil = MainActivity.myRef.child(model.getKeyParent());
+                chil.setValue(model);
                 finish();
             }
         });
